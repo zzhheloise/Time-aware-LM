@@ -1,6 +1,10 @@
-Download TempLAMA:
+## Download TempLAMA:
 ```
 mget https://storage.googleapis.com/gresearch/templama/train.json
 mget https://storage.googleapis.com/gresearch/templama/val.json
 mget https://storage.googleapis.com/gresearch/templama/test.json
+```
+## Preprocess TempLAMA
+```
+python TempLAMA-preprocess.py
 ```
