@@ -12,7 +12,13 @@ See `\data` for details
 
 ## Experiment
 
+We perform our experiments with an encoder-decoder model, T5, a large LM (about 737M params) initially pretrained on April 2019 dump of C4 and May 2020 dump of Wikipedia with salient span masking (SSM).
+
 ### LoRA setup
+
+Low-Rank Adaptation, or LoRA (Hu et al. 2021) freezes the pre-trained model weights and injects trainable rank decomposition matrics into each layer of the Transformer architecture, greatly reducing the number of trainable parameters for downstream tasks. Following Hu et al. (2021), we apply LoRAs to T5.
+
+
 
 ### Control setup
 
