@@ -8,7 +8,9 @@ We aim to answer two questions:
 
 ## Dataset
 
-Include WMT News Crawl Dataset, TempLAMA and InvariateLAMA .See `\data\README.md` for details
+Include WMT News Crawl Dataset, TempLAMA and InvariateLAMA. See `\data\README.md` for details
+
+The components in each configurations file will be updated later.
 
 ## Experiment
 
@@ -29,6 +31,8 @@ We use TempLAMA to train LoRA-future. After training LoRA-2016, we want to desig
 ### Control setup
 
 The only difference between two setups is that Control group train T5 models without any LoRAs. The training process is exactly the same.
+
+The codes in Control setup will be updated later.
 
 ## Evaluation
 
