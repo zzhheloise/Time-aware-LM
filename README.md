@@ -30,6 +30,8 @@ The only difference between two setups is that Control group train T5 models wit
 
 ### Task 1: forgeting
 
+We use InvariantLAMA to evaluate the forgetting problem of finetuned T5 models. We expect that as models forget more past facts as they go through more training phrases.
+
 ### Task 2: predicting
 
 relative perplexity
