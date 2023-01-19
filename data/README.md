@@ -6,7 +6,7 @@ We use WMT news to train a T5 model with parallel LoRAs. We inject LoRA-2016, Lo
 
 For Control Group, we repeat above training method on a T5 model without LoRAs. The difference is that we finetune all parameters in Control Group.
 
-Moreover, we use 2021 WMT news for evaluation. We sub-sample a test set of 12k test documents (1k per test month). We use 10 finetuned T5 models ()
+Moreover, we use 2021 WMT news for evaluation. We sub-sample a test set of 12k test documents (1k per test month). We use 10 finetuned T5 models (LoRA group and Control group) to calculate their perplexity results of predicting 2021 utterance. 
 
 See the details of downloading and preprocessing WMT news in `\data\WMT-news`
 
