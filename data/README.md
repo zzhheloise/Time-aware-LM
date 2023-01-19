@@ -24,8 +24,12 @@ We use TempLAMA to train LoRA-future. After training LoRA-2016, we want to desig
 
 We expect that models with trained LoRA-future can perform the best on predicting future utterance among all trained models. This is because we believe "Time is continuous". Pretrained language models know the knowledge in the next year can somehow understand the trend of chaning facts, meaning it may predict knowledge in next 3 years better than the model not knowing future knowledge at all.
 
+See the details of downloading and preprocessing TempLAMA in `\data\TempLAMA`.
+
 ## InvariantLAMA
 
 Jang et al. (2021) created InvariantLAMA, a subset of the LAMA task for measuring time-invariant knowledge which might be forgetten during CKL. We use InvariantLAMA to evaluate the forgetting problem of finetuned T5 models. We expect that as models forget more past facts as they go through more training phrases.
 
 However, the problem is that we need to check if the knowledge of InvariantLAMA is before 2016. If InvariantLAMA is updated to new knowledge after 2016, T5 model that is only trained on 2016 WMT news performs poorly on InvariantLAMA not beacause of forgetting, but because of not being able to predict the future knowledge. We may need to work on a new InvariantLAMA if this problem do exist.
+
+See the details of downloading InvariantLAMA in `\data\InvariantLAMA`.
