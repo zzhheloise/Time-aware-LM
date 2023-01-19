@@ -24,6 +24,8 @@ We use TempLAMA to train LoRA-future. After training LoRA-2016, we want to desig
 
 ### Control setup
 
+The only difference between two setups is that Control group train T5 models without any LoRAs. The training process is exactly the same.
+
 ## Evaluation
 
 ### Task 1: forgeting
