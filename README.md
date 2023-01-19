@@ -18,10 +18,11 @@ See `\data` for details
 
 ## Evaluation
 
-### Task 1: forget past knowledge
+### Task 1: forgeting
 
+### Task 2: predicting
 
-### Task 2: relative perplexity
+relative perplexity
 
 task 3: future closed-book qa
 
