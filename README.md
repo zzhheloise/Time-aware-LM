@@ -10,6 +10,19 @@ We aim to answer two questions:
 
 Include WMT News Crawl Dataset, TempLAMA and InvariateLAMA. See `\data\README.md` for details
 
+## Conda Environment
+
+```
+conda create -n timelm python=3.8 && conda activate timelm
+pip install -r requirements.txt
+#For CUDA 10.x
+pip3 install torch torchvision torchaudio
+#For CUDA 11.x
+pip3 install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+```
+
+## Configuration Files
+
 The components in each configurations file will be updated later.
 
 ## Experiment
