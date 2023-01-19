@@ -1,6 +1,8 @@
-# WMT news
+# WMT News Crawl
 
-WMT news is used for training LoRAs and perplexity evaluation
+We downloaded document-split versions of the English WMT News Crawl dataset. Its time period range from 2007 to 2021.
+
+As the dataset does not provide document IDs, we used SHA256 hashes of the Base64 encoded unsplit texts of articles as their IDs. Following is the instruction (https://github.com/deepmind/deepmind-research/tree/master/pitfalls_static_language_models)
 
 # LAMA
 
