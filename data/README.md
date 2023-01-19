@@ -12,8 +12,10 @@ See the details of downloading and preprocessing WMT news in `\data\WMT-news`
 
 # LAMA
 
+LAMA is blablabla. We use LAMA to fintune LoRA-future and evaluate the forgetting problem of fintuned T5 models.
+
 ## TempLAMA
 
-## LAMA in CKL
+## InvariateLAMA in CKL
 
 LAMA is used for task1
