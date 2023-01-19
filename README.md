@@ -2,6 +2,12 @@
 
 The goal of this project is to test if injecting LoRAs into T5 models could mitigate 'catastrophic forgetting' problem and/or make LMs perform better on predicting future utterances.
 
+We aim to answer two questions: 
+
+(1) Can parallel LoRAs mitigate "catastrophic forgetting" problem? This is, can T5 model with parallel LoRAs forget past knowledge more slowly during being fine-tuned on new corpora, compared with that without parallel LoRAs? 
+
+(2) How to design LoRA-future to tame the model to predict future utterance with higher accuracy (lower perplexity)? Moreover, can LoRA-future help T5 model perform better on future closed-book questions? 
+
 ## Experiment
 
 ### LoRA setup
