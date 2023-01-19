@@ -8,7 +8,7 @@ We aim to answer two questions:
 
 ## Dataset
 
-See `\data` for details
+Include WMT News Crawl Dataset, TempLAMA and InvariateLAMA .See `\data\README.md` for details
 
 ## Experiment
 
@@ -30,14 +30,20 @@ The only difference between two setups is that Control group train T5 models wit
 
 ### Task 1: forgeting
 
-We use InvariantLAMA to evaluate the forgetting problem of finetuned T5 models.We expect that as models forget more past facts as they go through more training phrases, and that models with LoRAs forget past facts more slowly than their counterparts without LoRAs.
+We use InvariantLAMA to evaluate the forgetting problem of finetuned T5 models.
+
+We expect that as models forget more past facts as they go through more training phrases, and that models with LoRAs forget past facts more slowly than their counterparts without LoRAs.
 
 ### Task 2: predicting
+
+We use 2021 WMT news for evaluating the predicting ability. We sub-sample a test set of 12k test documents (1k per test month). We use 10 finetuned T5 models (LoRA group and Control group) to calculate their perplexity results of predicting 2021 utterance. 
 
 Following Lazaridou et al. (2021), we use Relative Perplexity for comparing models in LoRA group and Control groups. This is because some months have longer 
 relative perplexity
 
 task 3: future closed-book qa
+
+We expect that models deteriorates more as we ask it to predict data further away from the training period, and that models with LoRAs predict future data more accurately than their counterparts without LoRAs.
 
 ## References
 
