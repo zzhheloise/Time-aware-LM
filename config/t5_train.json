@@ -2,7 +2,7 @@
     "input_length" : 350,
     "output_length" : 350,
     "num_train_epochs" : 8,
-    "output_dir" : "outputs/T5_lora16",
+    "output_dir" : "outputs/T5_large_wmtnews_lora16",
     "dataset" : "recentnews",
     "train_batch_size" : 5,
     "learning_rate" : 1e-3,
