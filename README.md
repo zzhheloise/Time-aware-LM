@@ -2,6 +2,21 @@
 
 The goal of this project is to test if injecting LoRAs into T5 models could mitigate 'catastrophic forgetting' problem and/or make LMs perform better on predicting future utterances.
 
+## Experiment
+
+### LoRA setup
+
+### Control setup
+
+## Evaluation
+
+### Task 1: forget past knowledge
+
+
+### Task 2: relative perplexity
+
+task 3: future closed-book qa
+
 ## References
 
 Bhuwan Dhingra, Jeremy R. Cole, Julian Martin Eisenschlos, Daniel Gillick, Jacob Eisenstein, and William W. Cohen (2022). Time-Aware Language Models as Temporal Knowledge Bases. ACL.
