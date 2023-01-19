@@ -36,13 +36,21 @@ The only difference between two setups is that Control group train T5 models wit
 
 We use InvariantLAMA to evaluate the forgetting problem of finetuned T5 models.
 
+```
+python run.py --config /config/t5_eval_lama.json
+```
+
 We expect that as models forget more past facts as they go through more training phrases, and that models with LoRAs forget past facts more slowly than their counterparts without LoRAs.
 
 ### Task 2: predicting
 
 We use 2021 WMT news for evaluating the predicting ability of models. We sub-sample a test set of 12k test documents (1k per test month). We use 10 finetuned T5 models (LoRA group and Control group) to calculate their perplexity results of predicting 2021 utterance. 
 
-Following Lazaridou et al. (2021), we use Relative Perplexity changes (%) between the model in Control group and that in LoRA groups, whose training phrases are the same. This is because some months have longer documents, which leads to higher absolute perplexity. The calculation formula of Relative Perplexity changes (%) is that the difference of Absolute Perpelexity of Control model minus that of LoRA model divided by that of LoRA model
+Following Lazaridou et al. (2021), we use Relative Perplexity changes (%) between the model in Control group and that in LoRA groups, whose training phrases are the same. This is because some months have longer documents, which leads to higher absolute perplexity. The calculation formula of Relative Perplexity changes (%) is that the difference of Absolute Perpelexity of Control model minus that of LoRA model divided by that of LoRA model.
+
+```
+python run.py --config /config/t5_eval_perp.json
+```
 
 We expect that models deteriorates more as we ask it to predict data further away from the training period, and that models with LoRAs predict future data more accurately than their counterparts without LoRAs. This is, Relative Perplexity change is always positive, and that it is shows upward slope whose x-axis is the end date of each traning phrases.
 
