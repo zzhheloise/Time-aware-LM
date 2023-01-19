@@ -16,9 +16,7 @@ We perform our experiments with an encoder-decoder model, T5, a large LM (about 
 
 ### LoRA setup
 
-Low-Rank Adaptation, or LoRA (Hu et al. 2021) freezes the pre-trained model weights and injects trainable rank decomposition matrics into each layer of the Transformer architecture, greatly reducing the number of trainable parameters for downstream tasks. Following Hu et al. (2021), we apply LoRAs to T5.
-
-Jang et al. (2021) injects two LoRAs to T5 for creating a ever-changing LM and finds that LMs are prone to more forgetting as they go through multiple traning phrases. We injects 6 LoRAs to T5, namely 
+Low-Rank Adaptation, or LoRA (Hu et al. 2021) freezes the pre-trained model weights and injects trainable rank decomposition matrics into each layer of the Transformer architecture, greatly reducing the number of trainable parameters for downstream tasks. Jang et al. (2021) injects two LoRAs to T5 for creating a ever-changing LM and finds that LMs are prone to more forgetting as they go through multiple traning phrases. Following above two works, we injects 6 LoRAs to T5, namely LoRA-2016, LoRA-2017, LoRA-2018, LoRA-2019, LoRA-2020 and LoRA-future.
 
 ### Control setup
 
