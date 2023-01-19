@@ -6,7 +6,7 @@
     "dataset" : "/root/zhihan/ckl-dataset/WMTNews-filtered/news-docs.2010.en.filtered.gz",
     "train_batch_size" : 32,
     "learning_rate" : 1e-3,
-    "model" : "/root/zhihan/ckl-t5models/T5_large_wmtnews_lora_2007",
+    "model" : "/root/zhihan/ckl-t5models/T5_large_wmtnews_lora16",
     "method": "lora16",
     "freeze_level": 0,
     "gradient_accumulation_steps" : 3,
@@ -16,11 +16,8 @@
     "accelerator" : "ddp",
     "use_deepspeed" : false,
     "CUDA_VISIBLE_DEVICES" : "2",
-    "wandb_log": false,
-    "wandb_project": "continual_learning_evaluation",
-    "wandb_run_name" : "perplexity_for_lora16",
     "use_lr_scheduling" : false,
     "check_validation" : "perp",
     "checkpoint_path" : "",
-    "output_log" : "log/perplexity/lora07.csv"
+    "output_log" : "log/perplexity/lora16.csv"
 }
