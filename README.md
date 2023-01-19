@@ -34,6 +34,7 @@ We use InvariantLAMA to evaluate the forgetting problem of finetuned T5 models.W
 
 ### Task 2: predicting
 
+Following Lazaridou et al. (2021), we use Relative Perplexity for comparing models in LoRA group and Control groups. This is because some months have longer 
 relative perplexity
 
 task 3: future closed-book qa
