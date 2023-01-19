@@ -6,8 +6,8 @@
     "dataset" : "invariantlama",
     "train_batch_size" : 32,
     "learning_rate" : 1e-3,
-    "model" : "/root/zhihan/t5-large-ssm",
-    "method": "lora",
+    "model" : "google/t5-large-ssm",
+    "method": "lora16",
     "freeze_level": 0,
     "gradient_accumulation_steps" : 3,
     "ngpu" : 1,
@@ -16,11 +16,8 @@
     "accelerator" : "ddp",
     "use_deepspeed" : false,
     "CUDA_VISIBLE_DEVICES" : "2",
-    "wandb_log": false,
-    "wandb_project": "continual_learning_evaluation",
-    "wandb_run_name" : "T5_large_recentnews(small)_lr.001_lora",
     "use_lr_scheduling" : false,
     "check_validation" : "lama",
-    "checkpoint_path" : "/root/zhihan/continual-knowledge-learning/outputs/T5_large_wmtnews_lora_2007/epoch=7-step=33047.ckpt",
-    "output_log" : "log/invariantLAMA/lora1.csv"
+    "checkpoint_path" : "/root/zhihan/continual-knowledge-learning/outputs/T5_large_wmtnews_lora16/epoch=7-step=33047.ckpt",
+    "output_log" : "log/invariantLAMA/lora16.csv"
 }
