@@ -1,7 +1,5 @@
 # Time-aware-LM
 
-The goal of this project is to test if injecting LoRAs into T5 models could mitigate 'catastrophic forgetting' problem and/or make LMs perform better on predicting future utterances.
-
 We aim to answer two questions: 
 
 (1) Can parallel LoRAs mitigate "catastrophic forgetting" problem? This is, can T5 model with parallel LoRAs forget past knowledge more slowly during being fine-tuned on new corpora, compared with that without parallel LoRAs? 
