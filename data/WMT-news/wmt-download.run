@@ -1,0 +1,6 @@
+wget --user=newscrawl --password=acrawl4me https://data.statmt.org/news-crawl/doc/en/news-docs.2016.en.filtered.gz
+wget --user=newscrawl --password=acrawl4me https://data.statmt.org/news-crawl/doc/en/news-docs.2017.en.filtered.gz
+wget --user=newscrawl --password=acrawl4me https://data.statmt.org/news-crawl/doc/en/news-docs.2018.en.filtered.gz
+wget --user=newscrawl --password=acrawl4me https://data.statmt.org/news-crawl/doc/en/news-docs.2019.en.filtered.gz
+wget --user=newscrawl --password=acrawl4me https://data.statmt.org/news-crawl/doc/en/news-docs.2020.en.filtered.gz
+wget --user=newscrawl --password=acrawl4me https://data.statmt.org/news-crawl/doc/en/news-docs.2021.en.filtered.gz
