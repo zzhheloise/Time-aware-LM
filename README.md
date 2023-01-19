@@ -2,9 +2,13 @@
 
 We aim to answer two questions: 
 
-(1) Can parallel LoRAs mitigate "catastrophic forgetting" problem? This is, can T5 model with parallel LoRAs forget past knowledge more slowly during being fine-tuned on new corpora, compared with that without parallel LoRAs? 
+(1) Can parallel LoRAs mitigate "catastrophic forgetting" problem? This is, while being fine-tuned on new corpora, can T5 models with parallel LoRAs forget past knowledge more slowly compared with those without parallel LoRAs? 
 
-(2) How to design LoRA-future to tame the model to predict future utterance with higher accuracy (lower perplexity)? Moreover, can LoRA-future help T5 model perform better on future closed-book questions? 
+(2) Can T5 models with parallel LoRAs and LoRA-future perform better on predicting future utterance? How to design LoRA-future to tame the model to predict future utterance? Moreover, can LoRA-future help T5 model perform better on future closed-book questions? 
+
+## Dataset
+
+See /data/* for details
 
 ## Experiment
 
