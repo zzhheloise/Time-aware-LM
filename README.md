@@ -20,6 +20,8 @@ Low-Rank Adaptation, or LoRA (Hu et al. 2021) freezes the pre-trained model weig
 
 We use WMT News Crawl Dataset from 2016 to 2020, to continuously train the T5 model with parallel LoRAs. For example, we train LoRA-2016 on 2016 WMT news, during which we freeze parameters of the encoder for T5. We then train the LoRA of next year, until finishing training LoRA-2020. We would save 5 finetuned T5 models after 5 training phrases.
 
+We use TempLAMA to train LoRA-future. After training LoRA-2016, we want to design a dataset to train LoRA-future, in order to inform this model of future knowledge. We can use the queries in 2017 in TempLAMA to train LoRA-future, using template like "In next year, Subject works for X".
+
 ### Control setup
 
 ## Evaluation
