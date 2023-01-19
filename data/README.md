@@ -18,12 +18,14 @@ LAnguage Model Analysis (LAMA) task requires probing LMs for world knowledge in 
 
 ## TempLAMA
 
-We use TempLAMA to train LoRA-future.
+Dhingra et al. (2022) identify all facts which have either a start or an end date after 2010 and whose subjects and objects are both entities with Wikipedia pages. For each subject and each relation they gather all the objects with their associated time interval and construct a separate query for each year in that interval. In total they construct 50,310 queries across 11 years.
+
+We use TempLAMA to train LoRA-future. After training LoRA-2016, we want to design a dataset to train LoRA-future, in order to inform this model of future knowledge. We can use the queries in 2017 in TempLAMA to train LoRA-future, using template like "In next year, Subject works for _X_". 
+
+We expect that models with trained LoRA-future can perform the best on predicting future utterance among all trained models. This is because we believe "Time is continuous". Pretrained language models know the knowledge in the next year can somehow understand the trend of chaning facts, meaning it may predict knowledge in next 3 years better than the model not knowing future knowledge at all.
 
 ## InvariantLAMA
 
 Jang et al. (2021) created InvariantLAMA, a subset of the LAMA task for measuring time-invariant knowledge which might be forgetten during CKL. We use InvariantLAMA to evaluate the forgetting problem of finetuned T5 models. We expect that as models forget more past facts as they go through more training phrases.
 
-However, the problem is that we need to check if the knowledge of InvariantLAMA is before 2016. If InvariantLAMA is updated to new knowledge after 2016, T5 model that is only trained on 2016 WMT news performs poorly on InvariantLAMA not beacause of forgetting, but because of not being able to predict the future knowledge.
-
-
+However, the problem is that we need to check if the knowledge of InvariantLAMA is before 2016. If InvariantLAMA is updated to new knowledge after 2016, T5 model that is only trained on 2016 WMT news performs poorly on InvariantLAMA not beacause of forgetting, but because of not being able to predict the future knowledge. We may need to work on a new InvariantLAMA if this problem do exist.
