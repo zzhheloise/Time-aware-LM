@@ -1,5 +1,10 @@
-How to download WMT? Website, version
+## Download WMT News Crawl Dataset
 
-How to preprocess them? SSM
+```
+bash wmt-download.run
+```
 
-How to sample them for perplexity evaluation?
+## Preprocess WMT news
+```
+python wmtnews-preprocess.py
+```
