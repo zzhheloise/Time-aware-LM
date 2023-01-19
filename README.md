@@ -18,7 +18,7 @@ We perform our experiments with an encoder-decoder model, T5, a large LM (about 
 
 Low-Rank Adaptation, or LoRA (Hu et al. 2021) freezes the pre-trained model weights and injects trainable rank decomposition matrics into each layer of the Transformer architecture, greatly reducing the number of trainable parameters for downstream tasks. Jang et al. (2021) injects two LoRAs to T5 for creating a ever-changing LM and finds that LMs are prone to more forgetting as they go through multiple traning phrases. Following above two works, we injects 6 LoRAs to T5, namely LoRA-2016, LoRA-2017, LoRA-2018, LoRA-2019, LoRA-2020 and LoRA-future.
 
-We use WMT News Crawl Dataset to continuously train the T5 model with parallel LoRAs. 
+We use WMT News Crawl Dataset to continuously train the T5 model with parallel LoRAs. For example, we train LoRA-2016 on 2016 WMT news, during which we freeze parameters of the encoder for T5. We then train the LoRA of next year, until finishing training LoRA-2020. We would save 5 finetuned T5 models after 5 training phrases.
 
 ### Control setup
 
