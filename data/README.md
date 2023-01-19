@@ -6,7 +6,9 @@ We use WMT news to train a T5 model with parallel LoRAs. We inject LoRA-2016, Lo
 
 For Control Group, we repeat above training method on a T5 model without LoRAs. The difference is that we finetune all parameters in Control Group.
 
-Moreover, we use 2021 WMT news for evaluation. We sub-sample a test set of 12k test documents (1k per test month). We use 10 finetuned T5 models (LoRA group and Control group) to calculate their perplexity results of predicting 2021 utterance. 
+As for how to train LoRA-future, we discuss this in LAMA part.
+
+Moreover, we use 2021 WMT news for evaluation. We sub-sample a test set of 12k test documents (1k per test month). We use 10 finetuned T5 models (LoRA group and Control group) to calculate their perplexity results of predicting 2021 utterance. We expect that models deteriorates more as we ask it to predict data further away from the training period, and that models with LoRAs predict future data more accurately than their counterparts without LoRAs.
 
 See the details of downloading and preprocessing WMT news in `\data\WMT-news`
 
@@ -18,4 +20,6 @@ LAnguage Model Analysis (LAMA) task requires probing LMs for world knowledge in 
 
 ## InvariantLAMA
 
-LAMA is used for task1
+Jang et al. (2021) created InvariantLAMA, a subset of the LAMA task for measuring time-invariant knowledge which might be forgetten during CKL. We use InvariantLAMA to evaluate 
+
+
