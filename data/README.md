@@ -12,10 +12,10 @@ See the details of downloading and preprocessing WMT news in `\data\WMT-news`
 
 # LAMA
 
-LAMA is blablabla. We use LAMA to fintune LoRA-future and evaluate the forgetting problem of fintuned T5 models.
+LAnguage Model Analysis (LAMA) task requires probing LMs for world knowledge in a zero-shot manner through slot-filling. We use TempLAMA and InvariantLAMA to fintune LoRA-future and evaluate the forgetting problem of fintuned T5 models.
 
 ## TempLAMA
 
-## InvariateLAMA in CKL
+## InvariantLAMA
 
 LAMA is used for task1
