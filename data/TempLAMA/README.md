@@ -1,6 +1,6 @@
 Download TempLAMA:
 ```
-https://storage.googleapis.com/gresearch/templama/train.json
-https://storage.googleapis.com/gresearch/templama/val.json
-https://storage.googleapis.com/gresearch/templama/test.json
+mget https://storage.googleapis.com/gresearch/templama/train.json
+mget https://storage.googleapis.com/gresearch/templama/val.json
+mget https://storage.googleapis.com/gresearch/templama/test.json
 ```
