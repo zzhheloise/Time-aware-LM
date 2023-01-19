@@ -8,7 +8,7 @@ We aim to answer two questions:
 
 ## Dataset
 
-See /data/* for details
+See `\data` for details
 
 ## Experiment
 
