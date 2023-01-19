@@ -20,6 +20,8 @@ LAnguage Model Analysis (LAMA) task requires probing LMs for world knowledge in 
 
 ## InvariantLAMA
 
-Jang et al. (2021) created InvariantLAMA, a subset of the LAMA task for measuring time-invariant knowledge which might be forgetten during CKL. We use InvariantLAMA to evaluate 
+Jang et al. (2021) created InvariantLAMA, a subset of the LAMA task for measuring time-invariant knowledge which might be forgetten during CKL. We use InvariantLAMA to evaluate the forgetting problem of finetuned T5 models. We expect that as models forget more past facts as they go through more training phrases.
+
+However, the problem is that we need to check if the knowledge of InvariantLAMA is before 2016. If InvariantLAMA is updated to new knowledge after 2016, T5 model that is only trained on 2016 WMT news performs poorly on InvariantLAMA not beacause of forgetting, but because of not being able to predict the future knowledge.
 
 
