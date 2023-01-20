@@ -6,6 +6,8 @@ We aim to answer two questions:
 
 (2) Can T5 models with parallel LoRAs and LoRA-future perform better on predicting future utterance? How to design LoRA-future to tame the model to predict future utterance? Moreover, can LoRA-future help T5 model perform better on future closed-book questions? 
 
+Aim (2) relates our belief that the evolution of language is continuous as time goes. So LMs that have seen some 5-years-later facts may be better at predicting 10-years-later utterance, compared with those only seeing 2-years-later facts. However, we should be aware that some facts, for example, only change once every 5 years and stay unchanged for the another 5 years. We need to find a way of control this variance.
+
 ## Dataset
 
 Include WMT News Crawl Dataset, TempLAMA and InvariateLAMA. See `\data\README.md` for details
