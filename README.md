@@ -10,7 +10,9 @@ Aim (2) relates our belief that the evolution of language is continuous as time 
 
 ## Dataset
 
-Include WMT News Crawl Dataset, TempLAMA and InvariateLAMA. See `\data\README.md` for details
+We use WMT News Crawl Dataset, TempLAMA and InvariateLAMA. 
+
+See `\data\README.md` for details
 
 ## Conda Environment
 
@@ -25,7 +27,7 @@ pip3 install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f h
 
 ## Configuration Files
 
-The components in each configurations file will be updated later.
+The components in configurations files are:
  * input_length (int) : the input sequence length
  * output_length (int) : the output sequence length
  * num_train_epochs (int) : number of training epochs
@@ -34,7 +36,7 @@ The components in each configurations file will be updated later.
  * train_batch_size (int) : batch size used for training
  * learning rate (float) : learning rate used for training
  * model (string) : model name in huggingface models ([https://huggingface.co/models](https://huggingface.co/models))
- * method (string) : method being used ['lora16', 'lora17', 'lora18', 'lora19', 'lora20', 'lora_future']
+ * method (string) :  'lora16', 'lora17', 'lora18', 'lora19', 'lora20', 'lora_future', or 'original'
  * freeze_level (int) : how much of the model to freeze during traininig (0 for none, 1 for freezing only encoder, 2 for freezing all of the parameters)
  * gradient_accumulation_steps (int) : gradient accumulation used to match the global training batch of each method
  * ngpu (int) : number of gpus used for the run
@@ -43,7 +45,7 @@ The components in each configurations file will be updated later.
  * use_deepspeed (bool) : false by default. Currently not extensively tested.
  * CUDA_VISIBLE_DEVICES (string) : gpu devices that are made available for this run (e.g. "0,1,2,3", "0")
  * use_lr_scheduling (bool) : true if using learning rate scheduling
- * check_validation (string) : ['lama', 'perp', '']
+ * check_validation (string) : 'lama' and 'perp' for evaluation, ''(empty) for training models
  * checkpoint_path (string) : path to the model checkpoint that is used for evaluation
  * output_log (string) : directory to log evaluation results to
 
