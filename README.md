@@ -4,9 +4,7 @@ We aim to answer two questions:
 
 (1) Can parallel LoRAs mitigate "catastrophic forgetting" problem? This is, while being fine-tuned on new corpora, can T5 models with parallel LoRAs forget past knowledge more slowly compared with those without parallel LoRAs? 
 
-(2) Can T5 models with parallel LoRAs and LoRA-future perform better on predicting future utterance? How to design LoRA-future to tame the model to predict future utterance? Moreover, can LoRA-future help T5 model perform better on future closed-book questions? 
-
-Aim (2) relates our belief that the evolution of language is continuous as time goes. So LMs that have seen some 5-years-later facts may be better at predicting 10-years-later utterance, compared with those only seeing 2-years-later facts. However, we should be aware that some facts, for example, only change once every 5 years and stay unchanged for the another 5 years. We need to find a way of control this variance.
+(2) Can T5 models with parallel LoRAs and LoRA-future perform better on predicting future utterance? How to design LoRA-future to tame the model to predict future utterance? Moreover, can LoRA-future help T5 model perform better on future closed-book questions?  This question relates to our belief that the evolution of language is continuous as time goes by. In this sence, LMs that have seen facts after 5 years could perform better on predicting utterances after 10 years (5+ years), compared with those only seen facts after 2 years (5- years).
 
 ## Dataset
 
