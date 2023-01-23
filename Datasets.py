@@ -8,7 +8,6 @@ from datasets import load_dataset
 class Pretrain(Dataset):
     def __init__(self, tokenizer, type_path, num_samples, input_length, output_length, args, length=None):
         self.args = args
-        print(f'split is {self.args.split}')
         self.tokenizer = tokenizer
         self.type_path = type_path
         self.ssm = False
@@ -16,22 +15,16 @@ class Pretrain(Dataset):
             self.model_type='T5'
         elif 'gpt2' in args.model_name_or_path:
             self.model_type='GPT2'
-        #self.dataset = pd.read_csv(self.args.dataset) # zzh read wmtnews directly from its path
         ids_to_answers = None
         # dataset for continual training
-        if 'wmt_data' in self.args.dataset: #zzh 'wmt_data' is the file of wmt datasets from 2007 to 2021
-            self.dataset = pd.read_csv(self.args.dataset) #zzh self.args.dataset is the path to dataset, different from former settings
+        if 'wmt' or 'WMT' in self.args.dataset:
+            self.dataset = pd.read_csv(self.args.dataset)
         # dataset for evaluation
         else: 
             if self.args.dataset == 'invariantlama':
-                # light tuning 5000 instances for GPT2 experiment
-                if type_path =='train':
-                    self.dataset = pd.read_csv('data/trex_5000.csv')
-                else:
-                    self.dataset = pd.read_csv('/root/zhihan/ckl-1-LAMA/LAMAs-CKL/invariantLAMA.csv')
+                self.dataset = pd.read_csv('data/InvariantLAMA/invariantLAMA.csv')
             elif self.args.dataset == 'templama':
-                rp_dir = '/root/zhihan/ckl-1-LAMA/TempLAMA/' #zzh need to update the dir of templama!
-                #zzh read TempLAMA
+                rp_dir = 'data/TempLAMA/'
                 file_list = ["train.json", "test.json", "val.json"]
                 templama_data = []
                 for file_name in file_list:
@@ -39,7 +32,6 @@ class Pretrain(Dataset):
                     for line in file.readlines():
                         dic = json.loads(line)
                         templama_data.append(dic)
-                #zzh reconstruct the frame of TempLAMA
                 if int(self.args.method[-2:]) < 10 :
                     target_year = '2010'
                 else:
@@ -66,7 +58,7 @@ class Pretrain(Dataset):
 
     def convert_to_features(self, example_batch, index=None):
         # continual pretraining
-        if 'wmt_data' in self.args.dataset:
+        if 'wmt' or 'WMT' in self.args.dataset:
             if self.model_type == 'GPT2':
                 input_ = example_batch['original']
                 target_= example_batch['original']
@@ -101,7 +93,6 @@ class Pretrain(Dataset):
                 target_ = example_batch['output']
             else:
                 raise Exception('Select the correct dataset!')
-        #zzh batch_encode_plus: Tokenize and prepare for the model a list of sequences or a list of pairs of sequences.
         source = self.tokenizer.batch_encode_plus([str(input_)], max_length=self.input_length, 
                                                     padding='max_length', truncation=True, return_tensors="pt") 
         targets = self.tokenizer.batch_encode_plus([str(target_)], max_length=self.output_length, 
@@ -118,18 +109,7 @@ class Pretrain(Dataset):
         elif (self.args.dataset == 'newlama' or self.args.dataset == 'updatedlama' or self.args.dataset == 'newlama_easy' or self.args.dataset == 'newqa_easy'):
             labels = example_batch['unique_id']
         else:
-            labels = None
-        '''
-        # zzh the codes used in Dataset_parallel.py
-        input_ = example_batch['input'] # zzh read input and output
-        target_ = example_batch['output']
-        source = self.tokenizer.batch_encode_plus([str(input_)], max_length=self.input_length, 
-                                                    padding='max_length', truncation=True, return_tensors="pt")
-        targets = self.tokenizer.batch_encode_plus([str(target_)], max_length=self.output_length, 
-                                                    padding='max_length', truncation=True, return_tensors="pt")     
-        ground_truth = None # zzh
-        labels = None 
-        '''                   
+            labels = None                 
         return source, targets, labels, ground_truth
   
     def __getitem__(self, index):
