@@ -1,0 +1,22 @@
+{
+    "input_length" : 350,
+    "output_length" : 350,
+    "num_train_epochs" : 8,
+    "output_dir" : "output/T5_large_WMT_lora_2016",
+    "dataset" : "data/WMT-news/news-filtered-2016.csv",
+    "train_batch_size" : 5,
+    "learning_rate" : 1e-3,
+    "model" : "google/t5-large-ssm",
+    "method": "lora16",
+    "freeze_level": 1,
+    "gradient_accumulation_steps" : 3,
+    "ngpu" : 7,
+    "num_workers" : 40,
+    "resume_from_checkpoint" : null,
+    "accelerator" : "ddp",
+    "use_deepspeed" : false,
+    "CUDA_VISIBLE_DEVICES" : "0,1,2,3,4,5,6",
+    "use_lr_scheduling" : true,
+    "check_validation" : "",
+    "checkpoint_path" : "data/modelcheckpoints/lora_last.ckpt"
+}

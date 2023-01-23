@@ -18,6 +18,6 @@
     "CUDA_VISIBLE_DEVICES" : "2",
     "use_lr_scheduling" : false,
     "check_validation" : "lama",
-    "checkpoint_path" : "/root/zhihan/continual-knowledge-learning/outputs/T5_large_wmtnews_lora16/epoch=7-step=33047.ckpt",
+    "checkpoint_path" : "output/T5_large_WMT_lora_2016/last_position.ckpt",
     "output_log" : "log/invariantLAMA/lora16.csv"
 }
