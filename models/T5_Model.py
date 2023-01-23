@@ -1,5 +1,6 @@
 import pytorch_lightning as pl
 from models.Lora_T5 import T5ForConditionalGeneration as T5_Lora
+from models.Original_T5 import T5ForConditionalGeneration as T5_Original
 import torch.nn.functional as F
 from transformers import (
     Adafactor,
@@ -26,18 +27,12 @@ class T5(pl.LightningModule):
         self.mix_decay = 0.7
         self.epoch = 0
 
-        #zzh Choosing which lora to train or update
         lora_list = ['lora16','lora17','lora18','lora19','lora20','lora_future']
-        #zzh update the model in the output lists to the param 'model_name_or_path'
-        self.model = T5_Lora.from_pretrained(hparams.model_name_or_path)
-        '''
-        if hparams.method == lora_list[0]:
+        #zzh update 'model_name_or_path' each time
+        if hparams.method in lora_list:
             self.model = T5_Lora.from_pretrained(hparams.model_name_or_path)
-        elif hparams.method in lora_list[1:]: 
-            #zzh 修改load pretrained model的地址，比如lora2需要load的checkpoint与lora_future是不一样的
-            previous_model_dir = (hparams.output_dir)[:len(hparams.output_dir)-1]
-            self.model = T5_Lora.from_pretrained(previous_model_dir)
-        '''
+        elif hparams.method == 'original':
+            self.model = T5_Original.from_pretrained(hparams.model_name_or_path)
         
         self.tokenizer = T5Tokenizer.from_pretrained(hparams.tokenizer_name_or_path)
         
@@ -50,10 +45,10 @@ class T5(pl.LightningModule):
             self.freeze_params(self.model) 
         
         # Unfreezing the parameters used for targeted lora
-        #zzh 能用self.model.named_parameters()打印出所有Layer形状吗？
-        for name, param in self.model.named_parameters():
-            if hparams.method in name:
-                param.requires_grad = True
+        if hparams.method in lora_list:
+            for name, param in self.model.named_parameters():
+                if hparams.method in name:
+                    param.requires_grad = True
  
         self.output_dir = self.hparams.output_dir
             
@@ -180,13 +175,10 @@ class T5(pl.LightningModule):
         return f1_score*100
 
     def get_dataset(self, tokenizer, type_path, num_samples, args, length=None):
-        if args.mode == 'pretrain' or args.mode == 'finetune':
-            dataset = Pretrain(tokenizer=tokenizer, type_path=type_path, num_samples=num_samples,  input_length=args.max_input_length, 
-                            output_length=args.max_output_length, args=args, length=length)
-            self.ids_to_answers = dataset.ids_to_answers
-            return dataset
-        else:
-            raise NameError('Select the correct mode please.')
+        dataset = Pretrain(tokenizer=tokenizer, type_path=type_path, num_samples=num_samples,  input_length=args.max_input_length, 
+                        output_length=args.max_output_length, args=args, length=length)
+        self.ids_to_answers = dataset.ids_to_answers
+        return dataset
 
     def freeze_params(self, model):
         for par in model.parameters():
@@ -257,18 +249,7 @@ class T5(pl.LightningModule):
         accuracy = 0
         rouge_score = 0
         f1_score = 0
-
-        '''
-        if self.hparams.dataset == 'TriviaQA' or self.hparams.dataset == 'zsRE' or self.hparams.dataset == 'TREX' or self.hparams.dataset == 'NQ' or self.hparams.dataset == 'HotpotQA':
-            em_score, accuracy = self.calculate_scores_multipleanswers(preds, targets, ids)
-        elif self.hparams.dataset =='ELI5':
-            rouge_score = self.calculate_rouge_multipleanswers(preds, targets, ids)
-        elif self.hparams.dataset =='WOW':
-            f1_score = self.calculate_f1_scores(preds, targets, ids)
-        else:
-            em_score, accuracy = self.calculate_scores(preds, targets)
-        '''
-
+        em_score, accuracy = self.calculate_scores(preds, targets)
         em_score = torch.tensor(em_score,dtype=torch.float32)
         accuracy = torch.tensor(accuracy,dtype=torch.float32)
         rouge_score = torch.tensor(rouge_score, dtype=torch.float32)
@@ -294,91 +275,32 @@ class T5(pl.LightningModule):
         self.epoch+=1
     
     def on_train_end(self):
-        self.model.save_pretrained(self.hparams.output_dir) #zzh go to the lora code
-        '''
-        if self.hparams.mode == 'pretrain':
-            if self.hparams.method=='recadam':
-                self.pretrained_model = self.model
-            elif self.hparams.method=='kadapter' or self.hparams.method=='lora' or self.hparams.method=='modular_small':
-                self.model.save_pretrained(self.hparams.output_dir)
-        '''
+        self.model.save_pretrained(self.hparams.output_dir)
 
     def validation_step(self, batch, batch_idx):
         return self._generative_step(batch, batch_idx)
 
     def configure_optimizers(self, train_len=None):
         "Prepare optimizer and schedule (linear warmup and decay)"
-        if self.hparams.method=='recadam':
-            no_decay = ["bias", "LayerNorm.weight"]
-            model_type = 't5'
-            recadam_anneal_w = 1.0
-            recadam_anneal_fun = 'sigmoid'
-            recadam_anneal_k = 0.5
-            recadam_anneal_t0 = 250
-            recadam_pretrain_cof = 5000.0
-            new_model = self.model
-            pretrained_model = self.pretrained_model
-            optimizer_grouped_parameters = [
-                {
-                    "params": [p for n, p in new_model.named_parameters() if
-                            not any(nd in n for nd in no_decay) and model_type in n],
-                    "weight_decay": self.hparams.weight_decay,
-                    "anneal_w": recadam_anneal_w,
-                    "pretrain_params": [p_p for p_n, p_p in pretrained_model.named_parameters() if
-                                        not any(nd in p_n for nd in no_decay) and model_type in p_n]
-                },
-                {
-                    "params": [p for n, p in new_model.named_parameters() if
-                            not any(nd in n for nd in no_decay) and model_type not in n],
-                    "weight_decay": self.hparams.weight_decay,
-                    "anneal_w": 0.0,
-                    "pretrain_params": [p_p for p_n, p_p in pretrained_model.named_parameters() if
-                                        not any(nd in p_n for nd in no_decay) and model_type not in p_n]
-                },
-                {
-                    "params": [p for n, p in new_model.named_parameters() if
-                            any(nd in n for nd in no_decay) and model_type in n],
-                    "weight_decay": 0.0,
-                    "anneal_w": recadam_anneal_w,
-                    "pretrain_params": [p_p for p_n, p_p in pretrained_model.named_parameters() if
-                                        any(nd in p_n for nd in no_decay) and model_type in p_n]
-                },
-                {
-                    "params": [p for n, p in new_model.named_parameters() if
-                            any(nd in n for nd in no_decay) and model_type not in n],
-                    "weight_decay": 0.0,
-                    "anneal_w": 0.0,
-                    "pretrain_params": [p_p for p_n, p_p in pretrained_model.named_parameters() if
-                                        any(nd in p_n for nd in no_decay) and model_type not in p_n]
-                }
-            ]
-            optimizer = RecAdam(optimizer_grouped_parameters, lr=self.hparams.learning_rate, eps=self.hparams.adam_epsilon,
-                                anneal_fun=recadam_anneal_fun, anneal_k=recadam_anneal_k,
-                                anneal_t0=recadam_anneal_t0, pretrain_cof=recadam_pretrain_cof)
-        else:
-            model = self.model
-            no_decay = ["bias", "LayerNorm.weight"]
-            optimizer_grouped_parameters = [
-                {
-                    "params": [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
-                    "weight_decay": self.hparams.weight_decay,
-                },
-                {
-                    "params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
-                    "weight_decay": 0.0,
-                },
-            ]
-            
-            optimizer = Adafactor(optimizer_grouped_parameters, lr=self.hparams.learning_rate, scale_parameter=False, relative_step=False)
+        model = self.model
+        no_decay = ["bias", "LayerNorm.weight"]
+        optimizer_grouped_parameters = [
+            {
+                "params": [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
+                "weight_decay": self.hparams.weight_decay,
+            },
+            {
+                "params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
+                "weight_decay": 0.0,
+            },
+        ]
+        
+        optimizer = Adafactor(optimizer_grouped_parameters, lr=self.hparams.learning_rate, scale_parameter=False, relative_step=False)
 
         #self.optimizer = optimizer
         if self.hparams.use_lr_scheduling:
             len_data = len(self.train_dataloader())
-            denomniator = (self.hparams.n_gpu * self.hparams.gradient_accumulation_steps) // 3 # Do not decay learning rate to 0 for small set 
-            '''
-            if self.hparams.dataset_version=='full':
-                denomniator = (self.hparams.n_gpu * self.hparams.gradient_accumulation_steps) // 2 # Do not decay learning rate to 0 for full set 
-            '''
+            denomniator = (self.hparams.n_gpu * self.hparams.gradient_accumulation_steps) // 2
             steps_per_epoch = ( len_data // denomniator ) + 1
             lr_scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, max_lr=self.hparams.learning_rate, steps_per_epoch=steps_per_epoch, pct_start=0.1, epochs=self.hparams.num_train_epochs, anneal_strategy='linear', cycle_momentum=False)
             return [optimizer], [{"scheduler": lr_scheduler, "interval": "step", "name": "learning rate"}]
@@ -390,42 +312,18 @@ class T5(pl.LightningModule):
         train_dataset = self.get_dataset(tokenizer=self.tokenizer, type_path="train", num_samples=n_samples, args=self.hparams)
         sampler = RandomSampler(train_dataset)
         dataloader = DataLoader(train_dataset, sampler=sampler,  batch_size=self.hparams.train_batch_size, drop_last=True, num_workers=self.hparams.num_workers)
-        '''
-        if self.hparams.method=='mixreview':
-            if self.hparams.split_num==2:
-                train_dataset = self.get_dataset(tokenizer=self.tokenizer, type_path="split", num_samples=n_samples, args=self.hparams)
-            else:
-                train_dataset = self.get_dataset(tokenizer=self.tokenizer, type_path="train", num_samples=n_samples, args=self.hparams)
-            mix_len = int(len(train_dataset) * self.mix_ratio * (self.mix_decay ** self.epoch))
-            pretrain_dataset = self.get_dataset(tokenizer=self.tokenizer, type_path="pretrain", num_samples=n_samples, args=self.hparams, length=mix_len)  
-            if self.hparams.split==2:
-                args2 = copy.deepcopy(self.hparams)
-                args2.split = 1
-                previous_dataset = self.get_dataset(tokenizer=self.tokenizer, type_path="split", num_samples=n_samples, args=args2)  
-                pretrain_dataset = ConcatDataset([previous_dataset,pretrain_dataset])
-            mixed_dataset = ConcatDataset([train_dataset,pretrain_dataset])
-            print("mix len is ", mix_len)
-            sampler=RandomSampler(mixed_dataset)
-            dataloader = DataLoader(mixed_dataset, sampler = sampler, batch_size=self.hparams.train_batch_size, drop_last=True, num_workers=self.hparams.num_workers)
-            print("dataset length is ", len(dataloader.dataset))
-        elif self.hparams.split_num==2:
-            train_dataset = self.get_dataset(tokenizer=self.tokenizer, type_path="split", num_samples=n_samples, args=self.hparams)
-            sampler = RandomSampler(train_dataset)
-            dataloader = DataLoader(train_dataset, sampler=sampler,  batch_size=self.hparams.train_batch_size, drop_last=True, num_workers=self.hparams.num_workers)  
-        else:     
-            train_dataset = self.get_dataset(tokenizer=self.tokenizer, type_path="train", num_samples=n_samples, args=self.hparams)
-            sampler = RandomSampler(train_dataset)
-            dataloader = DataLoader(train_dataset, sampler=sampler,  batch_size=self.hparams.train_batch_size, drop_last=True, num_workers=self.hparams.num_workers)
-        '''
         return dataloader
 
-    def val_dataloader(self):
-        if self.hparams.mode == 'pretrain':
+    def val_dataloader(self): #needs to be updated!
+        return None
+        '''
+        if self.hparams.mode == 'pretrain': #zzh may be deleted later
             return None
         else: 
             n_samples = self.n_obs['validation']
             validation_dataset = self.get_dataset(tokenizer=self.tokenizer, type_path="validation", num_samples=n_samples, args=self.hparams,)
             return DataLoader(validation_dataset, batch_size=self.hparams.eval_batch_size, num_workers=self.hparams.num_workers, shuffle=False)
+        '''
     
     def test_dataloader(self):
         n_samples = self.n_obs['test']
