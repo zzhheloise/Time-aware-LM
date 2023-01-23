@@ -1,10 +1,12 @@
 # Time-aware-LM
 
-We aim to answer two questions: 
+In this project, we want to design models that continually accumulate new knowledge without forgetting relevant information about the past. Jang et al. (2021) has created an ever-changing LM by injecting two LoRAs to T5 and focused on its temporal degradation problem. We follow his work by injecting more LoRAs into T5, and ask two questions: 
 
-(1) Can parallel LoRAs mitigate "catastrophic forgetting" problem? This is, while being fine-tuned on new corpora, can T5 models with parallel LoRAs forget past knowledge more slowly compared with those without parallel LoRAs? 
+* Can parallel LoRAs mitigate temporal degradation problem? This is, while being fine-tuned on new corpora, can T5 models with parallel LoRAs forget past knowledge more slowly compared with those without parallel LoRAs? 
 
-(2) Can T5 models with parallel LoRAs and LoRA-future perform better on predicting future utterance? How to design LoRA-future to tame the model to predict future utterance? Moreover, can LoRA-future help T5 model perform better on future closed-book questions?  This question relates to our belief that the evolution of language is continuous as time goes by. In this sence, LMs that have seen facts after 5 years could perform better on predicting utterances after 10 years (5+ years), compared with those only seen facts after 2 years (5- years).
+* Can T5 models with parallel LoRAs and LoRA-future perform better on predicting future utterance? How to design LoRA-future to tame the model to predict future utterance? Moreover, can LoRA-future help T5 model perform better on future closed-book questions?  
+
+The second question relates to our belief that the evolution of language is continuous as time goes by. In this sence, LMs that have seen facts after 5 years could perform better on predicting utterances after 10 years (5+ years), compared with those only seen facts after 2 years.
 
 ## Dataset
 
