@@ -25,17 +25,20 @@ pip3 install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f h
 
 ## Configuration Files
 
-We use four kinds of config files.
+We have four kinds of config files:
 
 ```
-t5-lora.json
+t5_eval_lama.json
+t5_eval_perp.json
+t5_train_lora.json
+t5_train_original.json
 ```
 
 The components in configurations files are:
  * input_length (int) : the input sequence length
  * output_length (int) : the output sequence length
  * num_train_epochs (int) : number of training epochs
- * output_dir (string) : the directory to save the model checkpoints
+ * output_dir (string) : the directory to save the model checkpoints, ""(empty) for evaluation
  * dataset (string) : the dataset to perform zero-shot evaluation or continual pretraining
  * train_batch_size (int) : batch size used for training
  * learning rate (float) : learning rate used for training
@@ -49,7 +52,7 @@ The components in configurations files are:
  * use_deepspeed (bool) : false by default. Currently not extensively tested.
  * CUDA_VISIBLE_DEVICES (string) : gpu devices that are made available for this run (e.g. "0,1,2,3", "0")
  * use_lr_scheduling (bool) : true if using learning rate scheduling
- * check_validation (string) : 'lama' and 'perp' for evaluation, ''(empty) for training models
+ * check_validation (string) : 'lama' and 'perp' for evaluation, ""(empty) for training models
  * checkpoint_path (string) : path to the model checkpoint that is used for evaluation
  * output_log (string) : directory to log evaluation results to
 
@@ -64,7 +67,7 @@ Low-Rank Adaptation, or LoRA (Hu et al. 2021) freezes the pre-trained model weig
 We use WMT News Crawl Dataset from 2016 to 2020, to continuously train the T5 model with parallel LoRAs. For example, we train LoRA-2016 on 2016 WMT news, during which we freeze parameters of the encoder for T5. We then train the LoRA of next year, until finishing training LoRA-2020. We would save 5 finetuned T5 models after 5 training phrases.
 
 ```
-python run.py --config /config/t5-train.json
+python run.py --config /config/t5_train_lora.json
 ```
 
 We use TempLAMA to train LoRA-future. After training LoRA-2016, we want to design a dataset to train LoRA-future, in order to inform this model of future knowledge. We can use the queries in 2017 in TempLAMA to train LoRA-future, using template like "In next year, Subject works for X".
@@ -73,7 +76,9 @@ We use TempLAMA to train LoRA-future. After training LoRA-2016, we want to desig
 
 The only difference between two setups is that Control group train T5 models without any LoRAs. The training process is exactly the same.
 
-The codes in Control setup will be updated later.
+```
+python run.py --config /config/t5_train_original.json
+```
 
 ## Evaluation
 
