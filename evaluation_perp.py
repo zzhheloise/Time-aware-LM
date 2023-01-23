@@ -1,3 +1,5 @@
+# This file now calculate the absolute perplexity of a LM on 2021 WMT News
+# This file will soon be updated to calculate the relative perplexity of two LMs
 
 import gzip
 import hashlib
